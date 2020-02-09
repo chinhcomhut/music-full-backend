@@ -36,7 +36,7 @@ public class SongRestAPI {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    @GetMapping("/product")
+    @GetMapping("/song")
     public ResponseEntity<?> getListProduct() {
         List<Song> songs = (List<Song>) songService.findAll();
         if(songs.isEmpty()) {
@@ -46,7 +46,7 @@ public class SongRestAPI {
         return new ResponseEntity<>(songs,HttpStatus.OK);
     }
 
-    @GetMapping("/product/{id}")
+    @GetMapping("/song/{id}")
     public ResponseEntity<?> getProduct(@PathVariable Long id) {
         Optional<Song> product = songService.findById(id);
 
@@ -57,7 +57,7 @@ public class SongRestAPI {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @PostMapping("/product")
+    @PostMapping("/song")
     public ResponseEntity<?> createSong(@Valid @RequestBody Song song) {
 
         song.setUpdate(false);
@@ -66,7 +66,7 @@ public class SongRestAPI {
         return new ResponseEntity<>(song, HttpStatus.CREATED);
     }
 
-    @PutMapping("/product/{id}")
+    @PutMapping("/song/{id}")
     public ResponseEntity<?> updateSong(@Valid @RequestBody Song song, @PathVariable Long id) {
         Optional<Song> song1 = songService.findById(id);
 
