@@ -70,7 +70,7 @@ public class SingerRestAPI {
         return new ResponseEntity<>(singer1,HttpStatus.OK);
     }
 
-    @DeleteMapping("/line/{id}")
+    @DeleteMapping("/singer/{id}")
     public ResponseEntity<?> deleteSinger(@PathVariable Long id) {
         Optional<Singer> singer = singerService.findById(id);
         if(!singer.isPresent()) {
