@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/singers")
 public class SingerRestAPI {
     @Autowired
     private ISingerService singerService;
@@ -33,7 +33,7 @@ public class SingerRestAPI {
         return (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
-    @PutMapping("/singer{id}")
+    @PutMapping("/update/{id}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> updateSinger(@Valid @RequestBody Singer singer, @PathVariable("id") Long id) {
         Singer singer1 = singerService.findByIdSinger(id);
@@ -46,7 +46,7 @@ public class SingerRestAPI {
         return new ResponseEntity<>(singer1, HttpStatus.OK);
     }
 
-    @PostMapping("/singer")
+    @PostMapping("/create")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<ResponseMessage> createSinger(@Valid @RequestBody Singer singer) {
         singer.setUser(this.userService.findById(getCurrentUser().getId()));
@@ -54,19 +54,19 @@ public class SingerRestAPI {
         return new ResponseEntity<ResponseMessage>(new ResponseMessage("create singer successfully",null), HttpStatus.OK);
     }
 
-    @GetMapping("/singer")
+    @GetMapping()
     public ResponseEntity<?> allSinger(){
         List<Singer> singers = singerService.findAll();
         return new ResponseEntity<>(singers,HttpStatus.OK);
     }
 
-    @GetMapping("/singer{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getByIdSinger(@PathVariable("id") Long id) {
         Singer singers = singerService.findByIdSinger(id);
         return new ResponseEntity<>(singers,HttpStatus.OK);
     }
 
-    @DeleteMapping("/singer{id}")
+    @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> deleteSinger(@PathVariable("id") Long id){
         singerService.delete(id);
