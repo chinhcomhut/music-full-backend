@@ -6,6 +6,7 @@ import com.codegym.wbdlaptop.service.ISingerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,6 +37,11 @@ public class SingerServiceImpl implements ISingerService {
     @Override
     public Iterable<Singer> findSingersByNameSingerContaining(String singer_name) {
         return singerRepository.findSingersByNameSingerContaining(singer_name);
+    }
+
+    @Override
+    public List<Singer> findAllByUserId(Long userId) {
+        return singerRepository.findAllByUserId(userId);
     }
 
 
