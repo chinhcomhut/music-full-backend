@@ -4,10 +4,12 @@ import com.codegym.wbdlaptop.model.Song;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ISongRepository extends PagingAndSortingRepository<Song, Long> {
 //    Iterable<Song> findProductsByUserId(Long user_id);
-    Iterable<Song> findSongsByUserId(Long user_id);
+    List<Song> findSongsByUserId(Long user_id);
 //    Iterable<Song> findProductsByNameContaining(String name);
     Iterable<Song> findSongsByNameSongContaining(String nameSong);
 //    Iterable<Song> findProductsByLineId(Long line_id);

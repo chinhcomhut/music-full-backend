@@ -6,13 +6,12 @@ import com.codegym.wbdlaptop.message.request.SignUpForm;
 import com.codegym.wbdlaptop.message.request.UserForm;
 import com.codegym.wbdlaptop.message.response.JwtResponse;
 import com.codegym.wbdlaptop.message.response.ResponseMessage;
-import com.codegym.wbdlaptop.model.Role;
-import com.codegym.wbdlaptop.model.RoleName;
-import com.codegym.wbdlaptop.model.Singer;
-import com.codegym.wbdlaptop.model.User;
+import com.codegym.wbdlaptop.model.*;
 import com.codegym.wbdlaptop.security.jwt.JwtProvider;
 import com.codegym.wbdlaptop.security.service.UserPrinciple;
 import com.codegym.wbdlaptop.service.IRoleService;
+import com.codegym.wbdlaptop.service.ISingerService;
+import com.codegym.wbdlaptop.service.ISongService;
 import com.codegym.wbdlaptop.service.IUserService;
 import com.codegym.wbdlaptop.service.Impl.SingerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +50,9 @@ public class AuthRestAPIs {
     @Autowired
     JwtProvider jwtProvider;
     @Autowired
-    SingerServiceImpl singerService;
+    ISingerService singerService;
+    @Autowired
+    ISongService songService;
     private UserPrinciple getCurrentUser() {
         return (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
@@ -169,5 +170,15 @@ public class AuthRestAPIs {
         }
         return new ResponseEntity<ResponseMessage>(new ResponseMessage("Success", singers), HttpStatus.OK);
     }
+    @GetMapping("/listSongByUser")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ResponseMessage> getListSongUserById() {
+        List<Song> songs = this.songService.findAllByUserId(getCurrentUser().getId());
+        if (songs == null) {
+            return new ResponseEntity<ResponseMessage>(new ResponseMessage("List null", null), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<ResponseMessage>(new ResponseMessage("Success", songs), HttpStatus.OK);
+    }
+
 
 }

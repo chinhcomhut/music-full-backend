@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +20,11 @@ public class SongServiceImpl implements ISongService {
     @Override
     public Optional<Song> findById(Long id) {
         return songRepository.findById(id);
+    }
+
+    @Override
+    public List<Song> findAllByUserId(Long userId) {
+        return songRepository.findSongsByUserId(userId);
     }
 
     @Override
@@ -38,11 +44,11 @@ public class SongServiceImpl implements ISongService {
 
     @Override
     public void delete(Long id) {
-songRepository.deleteById(id);
+        songRepository.deleteById(id);
     }
 
     @Override
-    public Iterable<Song> findSongByUserId(Long user_id) {
+    public List<Song> findSongByUserId(Long user_id) {
         return songRepository.findSongsByUserId(user_id);
     }
 
