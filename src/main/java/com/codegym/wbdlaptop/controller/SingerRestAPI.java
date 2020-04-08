@@ -29,9 +29,9 @@ public class SingerRestAPI {
     @Autowired
     private IUserService userService;
 
-    private UserPrinciple getCurrentUser(){
-        return (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    }
+//    private UserPrinciple getCurrentUser(){
+//        return (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//    }
 
     @PutMapping("/update/{id}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
@@ -46,13 +46,20 @@ public class SingerRestAPI {
         return new ResponseEntity<>(singer1, HttpStatus.OK);
     }
 
-    @PostMapping("/create")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<ResponseMessage> createSinger(@Valid @RequestBody Singer singer) {
-        singer.setUser(this.userService.findById(getCurrentUser().getId()));
-        singerService.save(singer);
-        return new ResponseEntity<ResponseMessage>(new ResponseMessage("create singer successfully",null), HttpStatus.OK);
-    }
+//    @PostMapping("/create")
+//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+//    public ResponseEntity<ResponseMessage> createSinger(@Valid @RequestBody Singer singer) {
+//        singer.setUser(this.userService.findById(getCurrentUser().getId()));
+//        singerService.save(singer);
+//        return new ResponseEntity<ResponseMessage>(new ResponseMessage("create singer successfully",null), HttpStatus.OK);
+//    }
+@PostMapping("/create")
+//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+public ResponseEntity<?> createSinger(@Valid @RequestBody Singer singer){
+//        singer.setUser(this.userService.findByUserId(getCurrentUser().getId()));
+    singerService.save(singer);
+    return new ResponseEntity<>(singer, HttpStatus.CREATED);
+}
 
     @GetMapping()
     public ResponseEntity<?> allSinger(){

@@ -8,9 +8,6 @@ import java.util.List;
 
 @Repository
 public interface ISingerRepository extends JpaRepository<Singer, Long> {
-//    Iterable<Singer> findLinesByNameContaining(String singer_name);
-    Iterable<Singer> findSingersByNameSingerContaining(String singer_name);
-    Iterable<Singer> findSingersByUserId(Long userId);
-    List<Singer> findAllByUserId(Long userId);
+List<Singer> findAllByUserId(Long userId);
 
 }
