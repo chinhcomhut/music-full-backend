@@ -1,6 +1,7 @@
 package com.codegym.wbdlaptop.controller;
 
 
+import com.codegym.wbdlaptop.message.response.ResponseMessage;
 import com.codegym.wbdlaptop.model.Singer;
 import com.codegym.wbdlaptop.model.Song;
 import com.codegym.wbdlaptop.service.ISingerService;
@@ -8,6 +9,7 @@ import com.codegym.wbdlaptop.service.ISongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -70,25 +72,31 @@ public class SingerRestAPI {
         return new ResponseEntity<>(singer1,HttpStatus.OK);
     }
 
-    @DeleteMapping("/singer/{id}")
-    public ResponseEntity<?> deleteSinger(@PathVariable Long id) {
-        Optional<Singer> singer = singerService.findById(id);
-        if(!singer.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        List<Song> songs = (List<Song>) songService.findSongByUserId(id);
-
-        if(!songs.isEmpty()) {
-            for (Song song : songs) {
-                songService.delete(song.getId());
-            }
-        }
-
-        singerService.delete(id);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+//    @DeleteMapping("/singer/{id}")
+//    public ResponseEntity<?> deleteSinger(@PathVariable Long id) {
+//        Optional<Singer> singer = singerService.findById(id);
+//        if(!singer.isPresent()) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//
+//        List<Song> songs = (List<Song>) songService.findSongByUserId(id);
+//
+//        if(!songs.isEmpty()) {
+//            for (Song song : songs) {
+//                songService.delete(song.getId());
+//            }
+//        }
+//
+//        singerService.delete(id);
+//
+//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//    }
+@DeleteMapping("/delete/{id}")
+@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+public ResponseEntity<?> deleteSinger(@PathVariable("id") Long id){
+    singerService.delete(id);
+    return new ResponseEntity<>(new ResponseMessage("delete success"),HttpStatus.OK);
+}
 
 //    @PostMapping("/line/search-by-name")
 //    public ResponseEntity<?> searchLineByNameLine(@RequestBody SearchLineByNameLine lineForm) {
