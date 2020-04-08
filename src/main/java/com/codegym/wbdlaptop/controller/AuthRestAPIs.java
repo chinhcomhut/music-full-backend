@@ -7,6 +7,7 @@ import com.codegym.wbdlaptop.message.request.UserForm;
 import com.codegym.wbdlaptop.message.response.JwtResponse;
 import com.codegym.wbdlaptop.message.response.ResponseMessage;
 import com.codegym.wbdlaptop.model.*;
+import com.codegym.wbdlaptop.repository.IUserRepository;
 import com.codegym.wbdlaptop.security.jwt.JwtProvider;
 import com.codegym.wbdlaptop.security.service.UserPrinciple;
 import com.codegym.wbdlaptop.service.IRoleService;
@@ -39,7 +40,7 @@ public class AuthRestAPIs {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    IUserService userService;
+    IUserRepository userRepository;
 
     @Autowired
     IRoleService roleService;
@@ -76,12 +77,12 @@ public class AuthRestAPIs {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpForm signUpRequest) {
-        if (userService.existsByUsername(signUpRequest.getUsername())) {
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return new ResponseEntity<>(new ResponseMessage("Fail -> Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        if (userService.existsByEmail(signUpRequest.getEmail())) {
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return new ResponseEntity<>(new ResponseMessage("Fail -> Email is already in use!"),
                     HttpStatus.BAD_REQUEST);
         }
@@ -115,14 +116,14 @@ public class AuthRestAPIs {
         });
 
         user.setRoles(roles);
-        userService.save(user);
+        userRepository.save(user);
 
         return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
     }
 
     @PutMapping("/update-profile/{id}")
     public ResponseEntity<?> updateUser(@Valid @RequestBody UserForm userForm, @PathVariable Long id) {
-        Optional<User> user = userService.findById(id);
+        Optional<User> user = userRepository.findById(id);
 
         if(user == null) {
             return new ResponseEntity<>("Can't Find User By Id" + id, HttpStatus.BAD_REQUEST);
@@ -131,7 +132,7 @@ public class AuthRestAPIs {
         try {
             user.get().setName(userForm.getName());
 
-            userService.save(user.get());
+            userRepository.save(user.get());
 
             return new ResponseEntity<>(new ResponseMessage("Update successful"), HttpStatus.OK);
         } catch (Exception e ) {
@@ -142,7 +143,7 @@ public class AuthRestAPIs {
 
     @PutMapping("/update-password/{id}")
     public ResponseEntity<?>updatePassword(@Valid @RequestBody PasswordForm passForm, @PathVariable Long id) {
-        Optional<User> user = userService.findById(id);
+        Optional<User> user = userRepository.findById(id);
 
         if (user == null ){
             return new ResponseEntity<>(new ResponseMessage("Not found user"),HttpStatus.NOT_FOUND);
@@ -154,7 +155,7 @@ public class AuthRestAPIs {
 
             user.get().setPassword(passwordEncoder.encode(passForm.getNewPassword()));
 
-            userService.save(user.get());
+            userRepository.save(user.get());
 
             return new ResponseEntity<>(new ResponseMessage("Change password successful"),HttpStatus.OK);
         } catch (Exception e) {

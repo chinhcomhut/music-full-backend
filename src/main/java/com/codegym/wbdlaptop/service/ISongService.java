@@ -19,7 +19,7 @@ public interface ISongService {
 
     void delete(Long id);
 
-    Iterable<Song> findSongByUserId(Long user_id);
+//    Iterable<Song> findSongByUserId(Long user_id);
 
     Iterable<Song> findSongBySingerId(Long singer_id);
 

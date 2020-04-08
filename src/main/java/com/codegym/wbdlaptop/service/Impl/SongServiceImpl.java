@@ -24,7 +24,7 @@ public class SongServiceImpl implements ISongService {
 
     @Override
     public List<Song> findAllByUserId(Long userId) {
-        return songRepository.findSongsByUserId(userId);
+        return songRepository.findAllByUserId(userId);
     }
 
     @Override
@@ -47,10 +47,15 @@ public class SongServiceImpl implements ISongService {
         songRepository.deleteById(id);
     }
 
-    @Override
-    public List<Song> findSongByUserId(Long user_id) {
-        return songRepository.findSongsByUserId(user_id);
-    }
+//    @Override
+//    public Iterable<Song> findSongByUserId(Long user_id) {
+//        return null;
+//    }
+
+//    @Override
+//    public List<Song> findSongByUserId(Long user_id) {
+//        return songRepository.findSongsByUserId(user_id);
+//    }
 
     @Override
     public Iterable<Song> findSongBySingerId(Long singer_id) {
