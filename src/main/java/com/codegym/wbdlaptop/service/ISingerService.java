@@ -1,9 +1,9 @@
 package com.codegym.wbdlaptop.service;
 
 import com.codegym.wbdlaptop.model.Singer;
-import javafx.collections.ObservableSet;
 
-import java.util.List;
+
+
 import java.util.Optional;
 
 public interface ISingerService {
