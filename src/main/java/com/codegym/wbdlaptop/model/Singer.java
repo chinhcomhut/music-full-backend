@@ -15,11 +15,15 @@ public class Singer {
     private String nameSinger;
     private String information;
     private String avatarSinger;
-@OneToOne
+@ManyToOne
 @JoinColumn
 private User user;
-    @JsonIgnore
-    @OneToMany(targetEntity = Song.class, mappedBy = "singer", cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    @OneToMany(targetEntity = Song.class, mappedBy = "singer", cascade = CascadeType.ALL)
+    @ManyToMany
+    @JoinTable (name = "singer_song",
+    joinColumns = @JoinColumn(name = "singer_id"),
+    inverseJoinColumns = @JoinColumn(name = "song_id"))
     private List<Song> songs;
 
     public Singer() {

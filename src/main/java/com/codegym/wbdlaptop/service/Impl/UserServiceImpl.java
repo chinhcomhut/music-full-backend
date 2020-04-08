@@ -10,44 +10,29 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements IUserService {
     @Autowired
-    private IUserRepository repository;
+    private IUserRepository userRepository;
     @Override
     public Optional<User> findByUsername(String username) {
-        return repository.findByUsername(username);
-    }
-
-    @Override
-    public Boolean existsByEmail(String email) {
-        return repository.existsByEmail(email);
+        return userRepository.findByUsername(username);
     }
 
     @Override
     public Boolean existsByUsername(String username) {
-        return repository.existsByUsername(username);
+        return userRepository.existsByUsername(username);
     }
 
     @Override
-    public Optional<User> findById(Long id) {
-        return repository.findById(id);
+    public Boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 
     @Override
-    public void save(User user) {
-        repository.save(user);
+    public User save(User user) {
+        return userRepository.save(user);
     }
 
     @Override
-    public Iterable<User> findAll() {
-        return repository.findAll();
-    }
-
-    @Override
-    public void delete(Long id) {
-        repository.deleteById(id);
-    }
-
-    @Override
-    public Iterable<User> findUsersByNameContaining(String user_name) {
-        return repository.findUsersByNameContaining(user_name);
+    public User findById(Long id) {
+        return userRepository.findById(id).get();
     }
 }

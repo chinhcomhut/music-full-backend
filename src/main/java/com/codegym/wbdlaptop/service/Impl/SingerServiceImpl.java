@@ -14,50 +14,29 @@ public class SingerServiceImpl implements ISingerService {
     @Autowired
     private ISingerRepository singerRepository;
 
-    @Override
-    public Optional<Singer> findById(Long id) {
-        return singerRepository.findById(id);
-    }
 
     @Override
-    public Iterable<Singer> findAll() {
+    public List<Singer> findAll() {
         return singerRepository.findAll();
     }
 
     @Override
-    public Singer save(Singer singer) {
-        return singerRepository.save(singer);
-    }
-
-    @Override
-    public void delete(Long id) {
-        singerRepository.deleteById(id);
-    }
-
-    @Override
-    public Iterable<Singer> findSingersByNameSingerContaining(String singer_name) {
-        return singerRepository.findSingersByNameSingerContaining(singer_name);
-    }
-
-    @Override
-    public Iterable<Singer> findAllByUserId(Long userId) {
+    public List<Singer> findAllByUserId(Long userId) {
         return singerRepository.findAllByUserId(userId);
     }
 
     @Override
-    public Iterable<Singer> findSingersByUserId(Long userId) {
-        return singerRepository.findSingersByUserId(userId);
+    public Singer findByIdSinger(Long id) {
+        return null;
     }
 
-//    @Override
-//    public List<Singer> findAllByUserId(Long userId) {
-//        return singerRepository.findAllByUserId(userId);
-//    }
+    @Override
+    public void save(Singer singer) {
 
-//    @Override
-//    public List<Singer> findSingersByUserId(Long userId) {
-//        return singerRepository.findSingersByUserId(userId);
-//    }
+    }
 
+    @Override
+    public void delete(Long id) {
 
+    }
 }

@@ -165,7 +165,7 @@ public class AuthRestAPIs {
     @GetMapping("/listSingerByUser")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<ResponseMessage> getListSingerUserById() {
-        Iterable<Singer> singers = this.singerService.findSingersByUserId(getCurrentUser().getId());
+        Iterable<Singer> singers = this.singerService.findAllByUserId(getCurrentUser().getId());
         if (singers == null) {
             return new ResponseEntity<ResponseMessage>(new ResponseMessage("List null", null), HttpStatus.NOT_FOUND);
         }

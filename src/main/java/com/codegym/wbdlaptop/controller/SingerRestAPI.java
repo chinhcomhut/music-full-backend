@@ -4,12 +4,15 @@ package com.codegym.wbdlaptop.controller;
 import com.codegym.wbdlaptop.message.response.ResponseMessage;
 import com.codegym.wbdlaptop.model.Singer;
 import com.codegym.wbdlaptop.model.Song;
+import com.codegym.wbdlaptop.security.service.UserPrinciple;
 import com.codegym.wbdlaptop.service.ISingerService;
 import com.codegym.wbdlaptop.service.ISongService;
+import com.codegym.wbdlaptop.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,96 +27,49 @@ public class SingerRestAPI {
     private ISingerService singerService;
 
     @Autowired
-    private ISongService songService;
+    private IUserService userService;
 
-    @GetMapping("/singer")
-    public ResponseEntity<?> getListAllLine() {
-        List<Singer> singerList = (List<Singer>) singerService.findAll();
-
-        if(singerList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<>(singerList,HttpStatus.OK);
+    private UserPrinciple getCurrentUser(){
+        return (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
-    @GetMapping("/singer/{id}")
-    public ResponseEntity<?> getSinger(@PathVariable Long id) {
-        Optional<Singer> line = singerService.findById(id);
-
-        if (!line.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(line,HttpStatus.OK);
+    @PutMapping("/update/singer/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<?> updateSinger(@Valid @RequestBody Singer singer, @PathVariable("id") Long id) {
+        Singer singer1 = singerService.findByIdSinger(id);
+        singer1.setNameSinger(singer.getNameSinger());
+        singer1.setInformation(singer.getInformation());
+        singer1.setAvatarSinger(singer.getAvatarSinger());
+        singer1.setSongs(singer.getSongs());
+        singer1.setUser(singer.getUser());
+        singerService.save(singer1);
+        return new ResponseEntity<>(singer1, HttpStatus.OK);
     }
 
-    @PostMapping("/singer")
-    public ResponseEntity<?> createSinger(@Valid @RequestBody Singer singer) {
+    @PostMapping("/create/singer")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<ResponseMessage> createSinger(@Valid @RequestBody Singer singer) {
+        singer.setUser(this.userService.findById(getCurrentUser().getId()));
         singerService.save(singer);
-
-        return new ResponseEntity<>(singer,HttpStatus.CREATED);
+        return new ResponseEntity<ResponseMessage>(new ResponseMessage("create singer successfully",null), HttpStatus.OK);
     }
 
-    @PutMapping("/singer" + "/{id}")
-    public ResponseEntity<?> updateSinger(@Valid @RequestBody Singer singer, @PathVariable Long id) {
-        Optional<Singer> singer1 = singerService.findById(id);
-        if(!singer1.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        singer1.get().setNameSinger(singer.getNameSinger());
-        singer1.get().setUser(singer.getUser());
-        singer1.get().setInformation(singer.getInformation());
-        singer1.get().setAvatarSinger(singer.getAvatarSinger());
-        singer1.get().setSongs(singer.getSongs());
-        singerService.save(singer1.get());
-
-        return new ResponseEntity<>(singer1,HttpStatus.OK);
+    @GetMapping()
+    public ResponseEntity<?> allSinger(){
+        List<Singer> singers = singerService.findAll();
+        return new ResponseEntity<>(singers,HttpStatus.OK);
     }
 
-//    @DeleteMapping("/singer/{id}")
-//    public ResponseEntity<?> deleteSinger(@PathVariable Long id) {
-//        Optional<Singer> singer = singerService.findById(id);
-//        if(!singer.isPresent()) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//
-//        List<Song> songs = (List<Song>) songService.findSongByUserId(id);
-//
-//        if(!songs.isEmpty()) {
-//            for (Song song : songs) {
-//                songService.delete(song.getId());
-//            }
-//        }
-//
-//        singerService.delete(id);
-//
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
-@DeleteMapping("/delete/{id}")
-@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-public ResponseEntity<?> deleteSinger(@PathVariable("id") Long id){
-    singerService.delete(id);
-    return new ResponseEntity<>(new ResponseMessage("delete success"),HttpStatus.OK);
-}
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getByIdSinger(@PathVariable("id") Long id) {
+        Singer singers = singerService.findByIdSinger(id);
+        return new ResponseEntity<>(singers,HttpStatus.OK);
+    }
 
-//    @PostMapping("/line/search-by-name")
-//    public ResponseEntity<?> searchLineByNameLine(@RequestBody SearchLineByNameLine lineForm) {
-//        if(lineForm.getName() == "" || lineForm.getName() == null ) {
-//            List<Singer> singers = (List<Singer>) lineService.findAll();
-//            if(singers.isEmpty()) {
-//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//            } else {
-//                return new ResponseEntity<>(singers,HttpStatus.OK);
-//            }
-//        }
-//
-//        List<Singer> singers = (List<Singer>) lineService.findLinesByNameContaining(lineForm.getName());
-//        if(singers.isEmpty()) {
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        } else {
-//            return new ResponseEntity<>(singers,HttpStatus.OK);
-//        }
-//    }
+    @DeleteMapping("/delete/singer{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<?> deleteSinger(@PathVariable("id") Long id){
+        singerService.delete(id);
+        return new ResponseEntity<>(new ResponseMessage("delete success"),HttpStatus.OK);
+    }
 }
