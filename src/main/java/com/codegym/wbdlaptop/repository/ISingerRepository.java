@@ -10,5 +10,7 @@ import java.util.List;
 public interface ISingerRepository extends JpaRepository<Singer, Long> {
 //    Iterable<Singer> findLinesByNameContaining(String singer_name);
     Iterable<Singer> findSingersByNameSingerContaining(String singer_name);
-    List<Singer> findAllByUserId(Long userId);
+    Iterable<Singer> findSingersByUserId(Long userId);
+    Iterable<Singer> findAllByUserId(Long userId);
+
 }

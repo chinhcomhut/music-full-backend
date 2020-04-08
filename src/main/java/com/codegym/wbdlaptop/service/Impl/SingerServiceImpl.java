@@ -40,9 +40,24 @@ public class SingerServiceImpl implements ISingerService {
     }
 
     @Override
-    public List<Singer> findAllByUserId(Long userId) {
+    public Iterable<Singer> findAllByUserId(Long userId) {
         return singerRepository.findAllByUserId(userId);
     }
+
+    @Override
+    public Iterable<Singer> findSingersByUserId(Long userId) {
+        return singerRepository.findSingersByUserId(userId);
+    }
+
+//    @Override
+//    public List<Singer> findAllByUserId(Long userId) {
+//        return singerRepository.findAllByUserId(userId);
+//    }
+
+//    @Override
+//    public List<Singer> findSingersByUserId(Long userId) {
+//        return singerRepository.findSingersByUserId(userId);
+//    }
 
 
 }

@@ -1,6 +1,7 @@
 package com.codegym.wbdlaptop.service;
 
 import com.codegym.wbdlaptop.model.Singer;
+import javafx.collections.ObservableSet;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,5 +16,8 @@ public interface ISingerService {
     void delete(Long id);
 
     Iterable<Singer> findSingersByNameSingerContaining(String singer_name);
-List<Singer> findAllByUserId(Long userId);
+
+    Iterable<Singer> findAllByUserId(Long userId);
+
+    Iterable<Singer> findSingersByUserId(Long userId);
 }
