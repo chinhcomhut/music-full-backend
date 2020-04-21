@@ -62,8 +62,12 @@ public ResponseEntity<?> createSinger(@Valid @RequestBody Singer singer){
 }
 
     @GetMapping()
-    public ResponseEntity<?> allSinger(){
-        List<Singer> singers = singerService.findAll();
+    public ResponseEntity<?> getListSinger() {
+        List<Singer> singers = (List<Singer>) singerService.findAll();
+        if(singers.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
         return new ResponseEntity<>(singers,HttpStatus.OK);
     }
 
