@@ -4,8 +4,10 @@ import com.codegym.wbdlaptop.model.Singer;
 import com.codegym.wbdlaptop.repository.ISingerRepository;
 import com.codegym.wbdlaptop.service.ISingerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +18,7 @@ public class SingerServiceImpl implements ISingerService {
 
 
     @Override
-    public List<Singer> findAll() {
+    public Iterable<Singer> findAll() {
         return singerRepository.findAll();
     }
 

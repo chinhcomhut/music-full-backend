@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/singers")
+@RequestMapping("/api/auth")
 public class SingerRestAPI {
     @Autowired
     private ISingerService singerService;
@@ -61,7 +61,7 @@ public ResponseEntity<?> createSinger(@Valid @RequestBody Singer singer){
     return new ResponseEntity<>(singer, HttpStatus.CREATED);
 }
 
-    @GetMapping()
+    @GetMapping("/singer")
     public ResponseEntity<?> getListSinger() {
         List<Singer> singers = (List<Singer>) singerService.findAll();
         if(singers.isEmpty()) {
