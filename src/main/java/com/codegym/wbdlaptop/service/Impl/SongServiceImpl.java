@@ -23,11 +23,6 @@ public class SongServiceImpl implements ISongService {
     }
 
     @Override
-    public List<Song> findAllByUserId(Long userId) {
-        return songRepository.findAllByUserId(userId);
-    }
-
-    @Override
     public Iterable<Song> findAll() {
         return songRepository.findAll();
     }
@@ -44,31 +39,26 @@ public class SongServiceImpl implements ISongService {
 
     @Override
     public void delete(Long id) {
-        songRepository.deleteById(id);
+songRepository.deleteById(id);
     }
 
-//    @Override
-//    public Iterable<Song> findSongByUserId(Long user_id) {
-//        return null;
-//    }
-
-//    @Override
-//    public List<Song> findSongByUserId(Long user_id) {
-//        return songRepository.findSongsByUserId(user_id);
-//    }
+    @Override
+    public Iterable<Song> findSongsByUserId(Long user_id) {
+        return songRepository.findSongsByUserId(user_id);
+    }
 
     @Override
-    public Iterable<Song> findSongBySingerId(Long singer_id) {
+    public Iterable<Song> findSongsByNameSongContaining(String name) {
+        return findSongsByNameSongContaining(name);
+    }
+
+    @Override
+    public Iterable<Song> findSongsBySingerId(Long singer_id) {
         return songRepository.findSongsBySingerId(singer_id);
     }
 
     @Override
-    public Iterable<Song> findSongsByNameSongContaining(String nameSong) {
-        return null;
-    }
-
-    @Override
-    public Iterable<Song> findSongsBySingerIdAndNameSongContaining(Long singer_id, String nameSong) {
-        return songRepository.findSongsBySingerIdAndNameSongContaining(singer_id, nameSong);
+    public Iterable<Song> findSongsBySingerAndNameSongContaining(Long singer_id, String name) {
+        return songRepository.findSongsBySingerAndNameSongContaining(singer_id, name);
     }
 }

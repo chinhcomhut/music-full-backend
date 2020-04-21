@@ -20,12 +20,10 @@ public class Singer {
 private User user;
 //    @JsonIgnore
 //    @OneToMany(targetEntity = Song.class, mappedBy = "singer", cascade = CascadeType.ALL)
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable (name = "singer_song",
-    joinColumns = @JoinColumn(name = "singer_id"),
-    inverseJoinColumns = @JoinColumn(name = "song_id"))
-    private List<Song> songs;
 
+  @JsonIgnore
+  @OneToMany(targetEntity = Song.class, mappedBy = "singer", cascade = CascadeType.ALL)
+    private List<Song> songs;
     public Singer() {
     }
 

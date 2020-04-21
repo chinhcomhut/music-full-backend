@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public interface ISongService {
     Optional<Song> findById(Long id);
-    List<Song> findAllByUserId (Long userId);
 
     Iterable<Song> findAll();
 
@@ -19,11 +18,11 @@ public interface ISongService {
 
     void delete(Long id);
 
-//    Iterable<Song> findSongByUserId(Long user_id);
+    Iterable<Song> findSongsByUserId(Long user_id);
 
-    Iterable<Song> findSongBySingerId(Long singer_id);
+    Iterable<Song> findSongsByNameSongContaining(String name);
 
-    Iterable<Song> findSongsByNameSongContaining(String nameSong);
+    Iterable<Song> findSongsBySingerId(Long singer_id);
 
-    Iterable<Song> findSongsBySingerIdAndNameSongContaining(Long singer_id, String nameSong);
+    Iterable<Song> findSongsBySingerAndNameSongContaining(Long singer_id, String name);
 }
